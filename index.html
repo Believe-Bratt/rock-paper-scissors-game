@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The most advanced Rock Paper Scissors game with AI, tournaments, and stunning visuals">
+    <title>Advanced Rock Paper Scissors Arena</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-container"></div>
+    
+    <header class="game-header">
+        <div class="header-content">
+            <h1 class="game-title">
+                <i class="fas fa-bolt"></i>
+                RPS ARENA
+                <i class="fas fa-bolt"></i>
+            </h1>
+            <div class="theme-switcher">
+                <button id="theme-toggle" aria-label="Switch theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <!-- Navigation Menu -->
+        <nav class="game-nav">
+            <button class="nav-btn active" data-mode="classic">
+                <i class="fas fa-play"></i>
+                Classic
+            </button>
+            <button class="nav-btn" data-mode="tournament">
+                <i class="fas fa-trophy"></i>
+                Tournament
+            </button>
+            <button class="nav-btn" data-mode="ai-battle">
+                <i class="fas fa-robot"></i>
+                AI Battle
+            </button>
+            <button class="nav-btn" data-mode="statistics">
+                <i class="fas fa-chart-bar"></i>
+                Stats
+            </button>
+            <button class="nav-btn" data-mode="settings">
+                <i class="fas fa-cog"></i>
+                Settings
+            </button>
+        </nav>
+
+        <!-- Game Modes -->
+        <section id="classic-mode" class="game-mode active">
+            <div class="score-board">
+                <div class="player-score">
+                    <h3>You</h3>
+                    <span id="player-score">0</span>
+                    <div class="streak" id="player-streak"></div>
+                </div>
+                <div class="vs-indicator">
+                    <span>VS</span>
+                    <div class="round-counter">Round <span id="current-round">1</span></div>
+                </div>
+                <div class="ai-score">
+                    <h3 id="ai-name">AI Opponent</h3>
+                    <span id="ai-score">0</span>
+                    <div class="streak" id="ai-streak"></div>
+                </div>
+            </div>
+
+            <div class="battle-arena">
+                <div class="player-side">
+                    <div class="choice-display" id="player-choice-display">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <div class="choice-label">Your Choice</div>
+                </div>
+
+                <div class="battle-center">
+                    <div class="battle-animation" id="battle-animation"></div>
+                    <div class="result-display" id="result-display"></div>
+                    <div class="countdown" id="countdown"></div>
+                </div>
+
+                <div class="ai-side">
+                    <div class="choice-display" id="ai-choice-display">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <div class="choice-label">AI Choice</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="choice-buttons">
+                    <button class="choice-btn" data-choice="rock" aria-label="Choose Rock">
+                        <i class="fas fa-hand-rock"></i>
+                        <span>Rock</span>
+                        <div class="choice-description">Crushes Scissors</div>
+                    </button>
+                    <button class="choice-btn" data-choice="paper" aria-label="Choose Paper">
+                        <i class="fas fa-hand-paper"></i>
+                        <span>Paper</span>
+                        <div class="choice-description">Covers Rock</div>
+                    </button>
+                    <button class="choice-btn" data-choice="scissors" aria-label="Choose Scissors">
+                        <i class="fas fa-hand-scissors"></i>
+                        <span>Scissors</span>
+                        <div class="choice-description">Cuts Paper</div>
+                    </button>
+                </div>
+
+                <div class="game-controls">
+                    <button id="reset-game" class="control-btn">
+                        <i class="fas fa-redo"></i>
+                        Reset Game
+                    </button>
+                    <button id="auto-play" class="control-btn">
+                        <i class="fas fa-play"></i>
+                        Auto Play
+                    </button>
+                    <select id="ai-difficulty" class="difficulty-select">
+                        <option value="easy">Easy AI</option>
+                        <option value="medium" selected>Medium AI</option>
+                        <option value="hard">Hard AI</option>
+                        <option value="expert">Expert AI</option>
+                        <option value="adaptive">Adaptive AI</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tournament Mode -->
+        <section id="tournament-mode" class="game-mode">
+            <div class="tournament-bracket">
+                <h2>Championship Tournament</h2>
+                <div class="bracket-container" id="bracket-container">
+                    <!-- Tournament bracket will be generated here -->
+                </div>
+                <div class="tournament-controls">
+                    <button id="start-tournament" class="tournament-btn">
+                        <i class="fas fa-flag"></i>
+                        Start Tournament
+                    </button>
+                    <select id="tournament-size">
+                        <option value="4">4 Players</option>
+                        <option value="8" selected>8 Players</option>
+                        <option value="16">16 Players</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Battle Mode -->
+        <section id="ai-battle-mode" class="game-mode">
+            <div class="ai-battle-setup">
+                <h2>AI Battle Arena</h2>
+                <div class="ai-selection">
+                    <div class="ai-fighter">
+                        <h3>Fighter 1</h3>
+                        <select id="ai1-type">
+                            <option value="random">Random AI</option>
+                            <option value="pattern">Pattern AI</option>
+                            <option value="counter">Counter AI</option>
+                            <option value="adaptive">Adaptive AI</option>
+                            <option value="neural">Neural AI</option>
+                        </select>
+                        <div class="ai-stats" id="ai1-stats"></div>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="ai-fighter">
+                        <h3>Fighter 2</h3>
+                        <select id="ai2-type">
+                            <option value="random">Random AI</option>
+                            <option value="pattern">Pattern AI</option>
+                            <option value="counter" selected>Counter AI</option>
+                            <option value="adaptive">Adaptive AI</option>
+                            <option value="neural">Neural AI</option>
+                        </select>
+                        <div class="ai-stats" id="ai2-stats"></div>
+                    </div>
+                </div>
+                <button id="start-ai-battle" class="ai-battle-btn">
+                    <i class="fas fa-swords"></i>
+                    Start AI Battle
+                </button>
+            </div>
+            <div class="ai-battle-results" id="ai-battle-results"></div>
+        </section>
+
+        <!-- Statistics Mode -->
+        <section id="statistics-mode" class="game-mode">
+            <div class="stats-container">
+                <h2>Game Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Games</h3>
+                        <span id="total-games">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Win Rate</h3>
+                        <span id="win-rate">0%</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Best Streak</h3>
+                        <span id="best-streak">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Favorite Choice</h3>
+                        <span id="favorite-choice">-</span>
+                    </div>
+                </div>
+                <div class="charts-container">
+                    <div class="chart" id="choice-distribution-chart">
+                        <h3>Choice Distribution</h3>
+                        <canvas id="choice-chart"></canvas>
+                    </div>
+                    <div class="chart" id="performance-chart">
+                        <h3>Performance Over Time</h3>
+                        <canvas id="performance-timeline"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Mode -->
+        <section id="settings-mode" class="game-mode">
+            <div class="settings-container">
+                <h2>Game Settings</h2>
+                <div class="settings-grid">
+                    <div class="setting-group">
+                        <h3>Visual Settings</h3>
+                        <div class="setting-item">
+                            <label for="particle-effects">Particle Effects</label>
+                            <input type="checkbox" id="particle-effects" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label for="sound-effects">Sound Effects</label>
+                            <input type="checkbox" id="sound-effects" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label for="animations">Animations</label>
+                            <input type="checkbox" id="animations" checked>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Game Settings</h3>
+                        <div class="setting-item">
+                            <label for="round-limit">Round Limit</label>
+                            <select id="round-limit">
+                                <option value="0">Unlimited</option>
+                                <option value="5">Best of 5</option>
+                                <option value="10" selected>Best of 10</option>
+                                <option value="20">Best of 20</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label for="countdown-timer">Countdown Timer</label>
+                            <select id="countdown-timer">
+                                <option value="3">3 seconds</option>
+                                <option value="5" selected>5 seconds</option>
+                                <option value="10">10 seconds</option>
+                                <option value="0">No timer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Data Management</h3>
+                        <button id="export-stats" class="setting-btn">
+                            <i class="fas fa-download"></i>
+                            Export Statistics
+                        </button>
+                        <button id="clear-stats" class="setting-btn danger">
+                            <i class="fas fa-trash"></i>
+                            Clear All Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Achievement System -->
+    <div class="achievement-toast" id="achievement-toast">
+        <i class="fas fa-trophy"></i>
+        <span id="achievement-text"></span>
+    </div>
+
+    <!-- Sound Effects -->
+    <audio id="sound-win" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYhBzeC1/XcdikBgdIc8+iRXRUFFqfy8K9nIg" type="audio/wav">
+    </audio>
+    <audio id="sound-lose" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYhBzeC1/XcdikBgdIc8+iRXRUFFqfy8K9nIg" type="audio/wav">
+    </audio>
+    <audio id="sound-draw" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmYhBzeC1/XcdikBgdIc8+iRXRUFFqfy8K9nIg" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
