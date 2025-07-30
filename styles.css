@@ -370,6 +370,21 @@ body::before {
     transform: scale(1.05);
 }
 
+.choice-btn.ready {
+    animation: ready-pulse 2s infinite;
+}
+
+@keyframes ready-pulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: var(--shadow-md);
+    }
+    50% { 
+        transform: scale(1.02);
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+    }
+}
+
 .choice-text {
     font-family: var(--font-primary);
     font-weight: 600;
@@ -416,6 +431,19 @@ body::before {
 .result-subtext {
     color: var(--text-secondary);
     font-size: 1rem;
+}
+
+.auto-restart-countdown {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: var(--spacing-sm);
+    text-align: center;
+    animation: pulse 1s infinite;
+}
+
+.auto-restart-countdown span {
+    font-weight: bold;
+    color: var(--accent-color);
 }
 
 /* Game Controls */

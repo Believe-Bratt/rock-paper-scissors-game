@@ -11,6 +11,7 @@ class UltimateRPS {
             aiDifficulty: 5,
             animationsEnabled: true,
             soundEnabled: true,
+            quickPlayMode: false,
             stats: {
                 wins: 0,
                 losses: 0,
@@ -81,6 +82,11 @@ class UltimateRPS {
             this.gameState.soundEnabled = e.target.checked;
         });
 
+        // Quick play mode
+        document.getElementById('enableQuickPlay').addEventListener('change', (e) => {
+            this.gameState.quickPlayMode = e.target.checked;
+        });
+
         // Modal close
         document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
         document.getElementById('modalOverlay').addEventListener('click', (e) => {
@@ -114,13 +120,18 @@ class UltimateRPS {
     }
 
     handlePlayerChoice(choice) {
-        if (this.gameState.playerChoice) return; // Prevent multiple selections
-
+        // Allow new choices even if game is in progress
         this.gameState.playerChoice = choice;
         this.updatePlayerDisplay();
         this.playSound('choice');
         
-        // Add delay for dramatic effect
+        // Remove ready state from buttons
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            btn.classList.remove('ready');
+        });
+        
+        // Add delay for dramatic effect (shorter in quick play mode)
+        const delay = this.gameState.quickPlayMode ? 300 : 1000;
         setTimeout(() => {
             this.makeAIChoice();
             this.determineWinner();
@@ -128,7 +139,13 @@ class UltimateRPS {
             this.updateStats();
             this.updateDisplay();
             this.showResult();
-        }, 1000);
+            
+            // Auto-restart after showing result (shorter in quick play mode)
+            const restartDelay = this.gameState.quickPlayMode ? 1500 : 3000;
+            setTimeout(() => {
+                this.resetGame();
+            }, restartDelay);
+        }, delay);
     }
 
     makeAIChoice() {
@@ -324,9 +341,11 @@ class UltimateRPS {
                 break;
         }
         
+        const countdownText = this.gameState.quickPlayMode ? '1' : '3';
         resultDisplay.innerHTML = `
             <div class="result-text ${resultClass}">${resultText}</div>
             <div class="result-subtext">${resultSubtext}</div>
+            <div class="auto-restart-countdown">Next round in <span id="countdown">${countdownText}</span>...</div>
         `;
         
         playAgainBtn.style.display = 'inline-flex';
@@ -335,6 +354,9 @@ class UltimateRPS {
         if (this.gameState.animationsEnabled) {
             resultDisplay.classList.add('fade-in');
         }
+        
+        // Start countdown
+        this.startCountdown();
     }
 
     updateStats() {
@@ -412,31 +434,50 @@ class UltimateRPS {
     }
 
     resetGame() {
+        // Clear game state
         this.gameState.playerChoice = null;
         this.gameState.aiChoice = null;
         this.gameState.result = null;
         
-        // Reset displays
-        document.getElementById('playerChoice').innerHTML = '<div class="choice-placeholder">Choose your weapon!</div>';
-        document.getElementById('playerChoice').classList.remove('has-choice');
-        document.getElementById('aiChoice').innerHTML = '<div class="choice-placeholder">AI is thinking...</div>';
-        document.getElementById('aiChoice').classList.remove('has-choice');
+        // Reset displays with smooth transitions
+        const playerChoice = document.getElementById('playerChoice');
+        const aiChoice = document.getElementById('aiChoice');
+        const resultDisplay = document.getElementById('resultDisplay');
         
-        // Reset result display
-        document.getElementById('resultDisplay').innerHTML = `
-            <div class="result-text">Ready to battle?</div>
-            <div class="result-subtext">Choose your weapon to begin!</div>
-        `;
+        // Add fade out effect
+        playerChoice.style.opacity = '0.5';
+        aiChoice.style.opacity = '0.5';
+        resultDisplay.style.opacity = '0.5';
         
-        // Hide play again button
-        document.getElementById('playAgainBtn').style.display = 'none';
-        
-        // Remove selection from buttons
+        setTimeout(() => {
+            // Reset player display
+            playerChoice.innerHTML = '<div class="choice-placeholder">Choose your weapon!</div>';
+            playerChoice.classList.remove('has-choice');
+            playerChoice.style.opacity = '1';
+            
+            // Reset AI display
+            aiChoice.innerHTML = '<div class="choice-placeholder">AI is thinking...</div>';
+            aiChoice.classList.remove('has-choice');
+            aiChoice.style.opacity = '1';
+            
+            // Reset result display
+            resultDisplay.innerHTML = `
+                <div class="result-text">Ready to battle?</div>
+                <div class="result-subtext">Choose your weapon to begin!</div>
+            `;
+            resultDisplay.style.opacity = '1';
+            
+            // Hide play again button
+            document.getElementById('playAgainBtn').style.display = 'none';
+            
+                    // Remove selection from buttons and add ready state
         document.querySelectorAll('.choice-btn').forEach(btn => {
             btn.classList.remove('selected');
+            btn.classList.add('ready');
         });
-        
-        this.updateDisplay();
+            
+            this.updateDisplay();
+        }, 200);
     }
 
     resetStats() {
@@ -630,6 +671,42 @@ class UltimateRPS {
                 setTimeout(() => inThrottle = false, limit);
             }
         };
+    }
+
+    startCountdown() {
+        let count = this.gameState.quickPlayMode ? 1 : 3;
+        const countdownElement = document.getElementById('countdown');
+        let countdownInterval;
+        
+        // Function to clear countdown and reset game
+        const clearCountdown = () => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            this.resetGame();
+        };
+        
+        // Allow skipping countdown with click or key press
+        const skipCountdown = () => {
+            clearCountdown();
+            document.removeEventListener('click', skipCountdown);
+            document.removeEventListener('keydown', skipCountdown);
+        };
+        
+        document.addEventListener('click', skipCountdown);
+        document.addEventListener('keydown', skipCountdown);
+        
+        const interval = this.gameState.quickPlayMode ? 1000 : 1000;
+        countdownInterval = setInterval(() => {
+            count--;
+            if (countdownElement) {
+                countdownElement.textContent = count;
+            }
+            
+            if (count <= 0) {
+                clearCountdown();
+            }
+        }, interval);
     }
 }
 
