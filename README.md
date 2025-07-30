@@ -22,6 +22,8 @@ The most advanced rock-paper-scissors game ever created! Featuring AI opponents,
 - **Classic Mode**: Traditional rock-paper-scissors
 - **Advanced Mode**: Enhanced features and special moves
 - **Tournament Mode**: Multi-round competitions
+- **Multiplayer Mode**: Local player vs player battles
+- **Lizard Spock Mode**: Extended 5-choice variant with Lizard and Spock
 
 ### 📊 Statistics & Analytics
 - **Real-time Stats**: Wins, losses, ties, and win rate
@@ -39,6 +41,8 @@ The most advanced rock-paper-scissors game ever created! Featuring AI opponents,
 - **R**: Choose Rock
 - **P**: Choose Paper  
 - **S**: Choose Scissors
+- **L**: Choose Lizard (in Lizard Spock mode)
+- **V**: Choose Spock (in Lizard Spock mode)
 - **Enter**: Play Again (when available)
 - **Escape**: Close modals
 
@@ -48,6 +52,11 @@ The most advanced rock-paper-scissors game ever created! Featuring AI opponents,
 - **PWA Ready**: Service worker support
 - **Easter Eggs**: Konami code and hidden features
 - **Mobile Optimized**: Touch-friendly interface
+- **Achievements System**: Unlock badges and trophies
+- **Power-ups**: Special abilities and bonuses
+- **Leaderboards**: Track high scores and statistics
+- **Multiple Themes**: Neon, Retro, Minimal, and Default themes
+- **Multiplayer Support**: Local 2-player battles
 
 ## 🚀 Getting Started
 
@@ -81,8 +90,23 @@ ultimate-rock-paper-scissors/
 - **Adjust AI Difficulty**: Use the slider in the Advanced Features panel
 - **Toggle Animations**: Enable/disable visual effects
 - **Sound Controls**: Turn audio on/off
-- **Game Modes**: Switch between Classic, Advanced, and Tournament modes
+- **Game Modes**: Switch between Classic, Advanced, Tournament, Multiplayer, and Lizard Spock modes
+- **Themes**: Choose from Default, Neon, Retro, or Minimal themes
 - **Statistics**: Monitor your performance and win rate
+- **Achievements**: Track your progress and unlock badges
+- **Power-ups**: Earn and use special abilities
+
+### Lizard Spock Rules
+
+The extended 5-choice variant adds Lizard 🦎 and Spock 🖖:
+
+- **Rock** crushes Scissors and Lizard
+- **Paper** covers Rock and disproves Spock
+- **Scissors** cuts Paper and decapitates Lizard
+- **Lizard** eats Paper and poisons Spock
+- **Spock** vaporizes Rock and smashes Scissors
+
+*"Scissors cuts paper, paper covers rock, rock crushes lizard, lizard poisons Spock, Spock smashes scissors, scissors decapitates lizard, lizard eats paper, paper disproves Spock, Spock vaporizes rock, and as it always has, rock crushes scissors."* - Sheldon Cooper
 
 ### AI Strategies Explained
 
@@ -106,6 +130,39 @@ ultimate-rock-paper-scissors/
 - Advanced psychological analysis
 - Predicts your next move based on previous outcomes
 - Most challenging opponent
+
+### 🏆 Achievements System
+
+Unlock achievements by completing various challenges:
+
+#### 🎯 Available Achievements
+- **🏆 First Victory**: Win your first game
+- **🔥 Hot Streak**: Win 5 games in a row
+- **⚡ Unstoppable**: Win 10 games in a row
+- **🎖️ Veteran**: Win 50 total games
+- **💎 Perfectionist**: Win without losing once in a session
+- **🤖 AI Master**: Beat AI on maximum difficulty
+- **🖖 Spock Logic**: Win 10 games in Lizard Spock mode
+- **⚡ Power Player**: Use all three power-ups
+
+### ⚡ Power-ups System
+
+Earn and use special abilities:
+
+#### 🛡️ Available Power-ups
+- **🛡️ Shield**: Protects against one loss
+- **⚡ Double Strike**: Win counts as two victories
+- **🧠 Mind Read**: See AI's next move in advance
+
+Power-ups are earned randomly when you win games (30% chance).
+
+### 🎨 Themes
+
+Choose from multiple visual themes:
+- **Default**: Classic dark theme with purple/pink gradients
+- **Neon**: Bright green and pink cyberpunk style
+- **Retro**: Orange and yellow vintage gaming theme
+- **Minimal**: Clean light theme for distraction-free play
 
 ## 🛠️ Technical Details
 

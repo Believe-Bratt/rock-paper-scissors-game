@@ -48,7 +48,7 @@
                 <div class="choice-display" id="playerChoice">
                     <div class="choice-placeholder">Choose your weapon!</div>
                 </div>
-                <div class="choice-buttons">
+                <div class="choice-buttons" id="playerButtons">
                     <button class="choice-btn rock" data-choice="rock" aria-label="Choose Rock">
                         <div class="choice-icon">🪨</div>
                         <span class="choice-text">Rock</span>
@@ -60,6 +60,14 @@
                     <button class="choice-btn scissors" data-choice="scissors" aria-label="Choose Scissors">
                         <div class="choice-icon">✂️</div>
                         <span class="choice-text">Scissors</span>
+                    </button>
+                    <button class="choice-btn lizard extended-choice" data-choice="lizard" aria-label="Choose Lizard" style="display: none;">
+                        <div class="choice-icon">🦎</div>
+                        <span class="choice-text">Lizard</span>
+                    </button>
+                    <button class="choice-btn spock extended-choice" data-choice="spock" aria-label="Choose Spock" style="display: none;">
+                        <div class="choice-icon">🖖</div>
+                        <span class="choice-text">Spock</span>
                     </button>
                 </div>
             </section>
@@ -87,7 +95,7 @@
             </section>
 
             <!-- AI Section -->
-            <section class="ai-section">
+            <section class="ai-section" id="aiSection">
                 <h2 class="section-title">AI Opponent</h2>
                 <div class="ai-info">
                     <div class="ai-avatar">
@@ -109,6 +117,42 @@
                     <div class="choice-placeholder">AI is thinking...</div>
                 </div>
             </section>
+
+            <!-- Player 2 Section (Multiplayer Mode) -->
+            <section class="player2-section" id="player2Section" style="display: none;">
+                <h2 class="section-title">Player 2</h2>
+                <div class="player-info">
+                    <div class="player-avatar">
+                        <div class="player-avatar-icon">👤</div>
+                        <div class="player-name">Player 2</div>
+                    </div>
+                </div>
+                <div class="choice-display" id="player2Choice">
+                    <div class="choice-placeholder">Waiting for choice...</div>
+                </div>
+                <div class="choice-buttons" id="player2Buttons">
+                    <button class="choice-btn rock" data-choice="rock" data-player="2" aria-label="Player 2 Choose Rock">
+                        <div class="choice-icon">🪨</div>
+                        <span class="choice-text">Rock</span>
+                    </button>
+                    <button class="choice-btn paper" data-choice="paper" data-player="2" aria-label="Player 2 Choose Paper">
+                        <div class="choice-icon">📄</div>
+                        <span class="choice-text">Paper</span>
+                    </button>
+                    <button class="choice-btn scissors" data-choice="scissors" data-player="2" aria-label="Player 2 Choose Scissors">
+                        <div class="choice-icon">✂️</div>
+                        <span class="choice-text">Scissors</span>
+                    </button>
+                    <button class="choice-btn lizard extended-choice" data-choice="lizard" data-player="2" aria-label="Player 2 Choose Lizard" style="display: none;">
+                        <div class="choice-icon">🦎</div>
+                        <span class="choice-text">Lizard</span>
+                    </button>
+                    <button class="choice-btn spock extended-choice" data-choice="spock" data-player="2" aria-label="Player 2 Choose Spock" style="display: none;">
+                        <div class="choice-icon">🖖</div>
+                        <span class="choice-text">Spock</span>
+                    </button>
+                </div>
+            </section>
         </main>
 
         <!-- Advanced Features Panel -->
@@ -126,6 +170,8 @@
                         <button class="mode-btn active" data-mode="classic">Classic</button>
                         <button class="mode-btn" data-mode="advanced">Advanced</button>
                         <button class="mode-btn" data-mode="tournament">Tournament</button>
+                        <button class="mode-btn" data-mode="multiplayer">Multiplayer</button>
+                        <button class="mode-btn" data-mode="lizard-spock">Lizard Spock</button>
                     </div>
                 </div>
                 <div class="feature-group">
@@ -151,6 +197,32 @@
                         </label>
                     </div>
                 </div>
+                <div class="feature-group">
+                    <h4>Themes</h4>
+                    <div class="theme-selector">
+                        <button class="theme-btn active" data-theme="default">Default</button>
+                        <button class="theme-btn" data-theme="neon">Neon</button>
+                        <button class="theme-btn" data-theme="retro">Retro</button>
+                        <button class="theme-btn" data-theme="minimal">Minimal</button>
+                    </div>
+                </div>
+                <div class="feature-group">
+                    <h4>Power-ups</h4>
+                    <div class="powerup-controls">
+                        <div class="powerup-item">
+                            <span class="powerup-name">Shield 🛡️</span>
+                            <span class="powerup-count" id="shieldCount">0</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-name">Double Strike ⚡</span>
+                            <span class="powerup-count" id="doubleStrikeCount">0</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-name">Mind Read 🧠</span>
+                            <span class="powerup-count" id="mindReadCount">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -159,6 +231,22 @@
             <h3>Game History</h3>
             <div class="history-container" id="gameHistory">
                 <div class="history-placeholder">No games played yet</div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section class="achievements-section">
+            <h3>Achievements</h3>
+            <div class="achievements-container" id="achievementsContainer">
+                <div class="achievement-placeholder">Play games to unlock achievements!</div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="leaderboard-section">
+            <h3>Leaderboard</h3>
+            <div class="leaderboard-container" id="leaderboardContainer">
+                <div class="leaderboard-placeholder">No scores recorded yet</div>
             </div>
         </section>
     </div>
