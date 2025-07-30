@@ -88,6 +88,92 @@ body::before {
     z-index: -1;
 }
 
+/* Install Prompt */
+.install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    animation: slideUp 0.5s ease-out;
+    max-width: 400px;
+    width: 90%;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.install-icon {
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+}
+
+.install-text h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.install-text p {
+    margin: var(--spacing-xs) 0 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.install-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--transition-normal);
+}
+
+.install-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.install-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all var(--transition-normal);
+}
+
+.install-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
 /* Loading Screen */
 .loading-screen {
     position: fixed;
@@ -344,9 +430,22 @@ body::before {
 }
 
 .choice-btn:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.05);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-glow);
+    animation: buttonGlow 0.3s ease-out;
+}
+
+@keyframes buttonGlow {
+    0% {
+        box-shadow: var(--shadow-glow);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+    }
+    100% {
+        box-shadow: var(--shadow-glow);
+    }
 }
 
 .choice-btn.rock:hover {
@@ -899,6 +998,17 @@ body::before {
     to {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
     }
 }
 

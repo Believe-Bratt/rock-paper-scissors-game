@@ -47,6 +47,7 @@ class UltimateRPS {
         this.hideLoadingScreen();
         this.updateDisplay();
         this.initializeAI();
+        this.initializePWA();
     }
 
     setupEventListeners() {
@@ -327,6 +328,7 @@ class UltimateRPS {
                 resultSubtext = `Your ${playerChoice} beats AI's ${aiChoice}`;
                 resultClass = 'win';
                 this.playSound('win');
+                this.addConfetti();
                 break;
             case 'loss':
                 resultText = 'Defeat! 😔';
@@ -707,6 +709,121 @@ class UltimateRPS {
                 clearCountdown();
             }
         }, interval);
+    }
+
+    initializePWA() {
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('SW registered: ', registration);
+                    this.checkForUpdates(registration);
+                })
+                .catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+        }
+
+        // Handle install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            this.showInstallPrompt();
+        });
+
+        // Handle install button click
+        document.getElementById('installBtn')?.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    this.hideInstallPrompt();
+                });
+            }
+        });
+
+        // Handle install close button
+        document.getElementById('installClose')?.addEventListener('click', () => {
+            this.hideInstallPrompt();
+        });
+
+        // Handle app installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            this.hideInstallPrompt();
+        });
+    }
+
+    showInstallPrompt() {
+        const prompt = document.getElementById('installPrompt');
+        if (prompt) {
+            prompt.style.display = 'block';
+            setTimeout(() => {
+                prompt.style.display = 'none';
+            }, 10000); // Auto-hide after 10 seconds
+        }
+    }
+
+    hideInstallPrompt() {
+        const prompt = document.getElementById('installPrompt');
+        if (prompt) {
+            prompt.style.display = 'none';
+        }
+    }
+
+    checkForUpdates(registration) {
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    this.showUpdateNotification();
+                }
+            });
+        });
+    }
+
+    showUpdateNotification() {
+        if (confirm('A new version is available! Would you like to update?')) {
+            window.location.reload();
+        }
+    }
+
+    // Enhanced game features
+    addConfetti() {
+        if (!this.gameState.animationsEnabled) return;
+        
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+        const confettiCount = 50;
+        
+        for (let i = 0; i < confettiCount; i++) {
+            setTimeout(() => {
+                this.createConfetti(colors[Math.floor(Math.random() * colors.length)]);
+            }, i * 10);
+        }
+    }
+
+    createConfetti(color) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.top = '-10px';
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.backgroundColor = color;
+        confetti.style.borderRadius = '50%';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.zIndex = '9999';
+        confetti.style.animation = 'confettiFall 3s linear forwards';
+        
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => {
+            document.body.removeChild(confetti);
+        }, 3000);
     }
 }
 

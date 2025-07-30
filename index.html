@@ -3,38 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The most advanced Rock Paper Scissors game with AI, animations, and modern features">
-    <title>Ultimate Rock Paper Scissors - Advanced Edition</title>
+    <meta name="description" content="🎮 The most advanced Rock Paper Scissors game with AI, animations, and modern features - Play now!">
+    <meta name="keywords" content="rock paper scissors, game, AI, multiplayer, fun, strategy">
+    <meta name="author" content="Ultimate RPS Team">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ultimate RPS">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ultimate-rps.com/">
+    <meta property="og:title" content="Ultimate Rock Paper Scissors - Advanced Edition">
+    <meta property="og:description" content="🎮 The most advanced Rock Paper Scissors game with AI, animations, and modern features">
+    <meta property="og:image" content="https://ultimate-rps.com/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ultimate-rps.com/">
+    <meta property="twitter:title" content="Ultimate Rock Paper Scissors - Advanced Edition">
+    <meta property="twitter:description" content="🎮 The most advanced Rock Paper Scissors game with AI, animations, and modern features">
+    <meta property="twitter:image" content="https://ultimate-rps.com/og-image.png">
+
+    <title>🎮 Ultimate Rock Paper Scissors - Advanced Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✂️</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
 </head>
 <body>
     <div class="game-container">
         <!-- Header Section -->
         <header class="game-header">
             <h1 class="game-title">
-                <span class="title-main">Ultimate</span>
+                <span class="title-main">🎮 Ultimate</span>
                 <span class="title-sub">Rock Paper Scissors</span>
                 <span class="title-version">Advanced Edition</span>
             </h1>
             <div class="game-stats">
                 <div class="stat-item">
-                    <span class="stat-label">Wins</span>
+                    <span class="stat-label">🏆 Wins</span>
                     <span class="stat-value" id="wins">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Losses</span>
+                    <span class="stat-label">💔 Losses</span>
                     <span class="stat-value" id="losses">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Ties</span>
+                    <span class="stat-label">🤝 Ties</span>
                     <span class="stat-value" id="ties">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">Win Rate</span>
+                    <span class="stat-label">📊 Win Rate</span>
                     <span class="stat-value" id="winRate">0%</span>
                 </div>
             </div>
@@ -44,9 +74,9 @@
         <main class="game-arena">
             <!-- Player Section -->
             <section class="player-section">
-                <h2 class="section-title">You</h2>
+                <h2 class="section-title">🎯 You</h2>
                 <div class="choice-display" id="playerChoice">
-                    <div class="choice-placeholder">Choose your weapon!</div>
+                    <div class="choice-placeholder">Choose your weapon! ⚔️</div>
                 </div>
                 <div class="choice-buttons">
                     <button class="choice-btn rock" data-choice="rock" aria-label="Choose Rock">
@@ -67,20 +97,20 @@
             <!-- Battle Zone -->
             <section class="battle-zone">
                 <div class="vs-display">
-                    <div class="vs-text">VS</div>
+                    <div class="vs-text">⚔️ VS ⚔️</div>
                     <div class="battle-animation" id="battleAnimation"></div>
                 </div>
                 <div class="result-display" id="resultDisplay">
-                    <div class="result-text">Ready to battle?</div>
+                    <div class="result-text">Ready to battle? 🚀</div>
                     <div class="result-subtext">Choose your weapon to begin!</div>
                 </div>
                 <div class="game-controls">
                     <button class="control-btn primary" id="playAgainBtn" style="display: none;">
-                        <span class="btn-text">Play Again</span>
+                        <span class="btn-text">🔄 Play Again</span>
                         <span class="btn-icon">🔄</span>
                     </button>
                     <button class="control-btn secondary" id="resetBtn">
-                        <span class="btn-text">Reset Stats</span>
+                        <span class="btn-text">🔄 Reset Stats</span>
                         <span class="btn-icon">🔄</span>
                     </button>
                 </div>
@@ -88,7 +118,7 @@
 
             <!-- AI Section -->
             <section class="ai-section">
-                <h2 class="section-title">AI Opponent</h2>
+                <h2 class="section-title">🤖 AI Opponent</h2>
                 <div class="ai-info">
                     <div class="ai-avatar">
                         <div class="ai-avatar-icon">🤖</div>
@@ -106,7 +136,7 @@
                     </div>
                 </div>
                 <div class="choice-display" id="aiChoice">
-                    <div class="choice-placeholder">AI is thinking...</div>
+                    <div class="choice-placeholder">AI is thinking... 🤔</div>
                 </div>
             </section>
         </main>
@@ -114,14 +144,14 @@
         <!-- Advanced Features Panel -->
         <aside class="features-panel">
             <div class="panel-header">
-                <h3>Advanced Features</h3>
+                <h3>⚙️ Advanced Features</h3>
                 <button class="panel-toggle" id="panelToggle" aria-label="Toggle advanced features">
                     <span class="toggle-icon">⚙️</span>
                 </button>
             </div>
             <div class="panel-content" id="panelContent">
                 <div class="feature-group">
-                    <h4>Game Modes</h4>
+                    <h4>🎮 Game Modes</h4>
                     <div class="mode-selector">
                         <button class="mode-btn active" data-mode="classic">Classic</button>
                         <button class="mode-btn" data-mode="advanced">Advanced</button>
@@ -129,7 +159,7 @@
                     </div>
                 </div>
                 <div class="feature-group">
-                    <h4>AI Difficulty</h4>
+                    <h4>🎯 AI Difficulty</h4>
                     <div class="difficulty-slider">
                         <input type="range" id="aiDifficulty" min="1" max="10" value="5" class="slider">
                         <div class="slider-labels">
@@ -139,7 +169,7 @@
                     </div>
                 </div>
                 <div class="feature-group">
-                    <h4>Animations</h4>
+                    <h4>✨ Animations</h4>
                     <div class="animation-controls">
                         <label class="control-label">
                             <input type="checkbox" id="enableAnimations" checked>
@@ -160,7 +190,7 @@
 
         <!-- Game History -->
         <section class="game-history">
-            <h3>Game History</h3>
+            <h3>📜 Game History</h3>
             <div class="history-container" id="gameHistory">
                 <div class="history-placeholder">No games played yet</div>
             </div>
@@ -195,7 +225,20 @@
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-content">
             <div class="loading-spinner"></div>
-            <div class="loading-text">Loading Ultimate RPS...</div>
+            <div class="loading-text">Loading Ultimate RPS... 🚀</div>
+        </div>
+    </div>
+
+    <!-- Install PWA Prompt -->
+    <div class="install-prompt" id="installPrompt" style="display: none;">
+        <div class="install-content">
+            <div class="install-icon">📱</div>
+            <div class="install-text">
+                <h3>Install Ultimate RPS</h3>
+                <p>Add to your home screen for the best experience!</p>
+            </div>
+            <button class="install-btn" id="installBtn">Install</button>
+            <button class="install-close" id="installClose">&times;</button>
         </div>
     </div>
 
