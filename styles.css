@@ -71,6 +71,17 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
+    cursor: default;
+}
+
+/* Enhanced cursor for interactive elements */
+.choice-btn, .control-btn, .mode-btn {
+    cursor: pointer;
+}
+
+.choice-btn:hover, .control-btn:hover, .mode-btn:hover {
+    cursor: pointer;
+    transform: translateY(-2px);
 }
 
 body::before {
@@ -247,6 +258,16 @@ body::before {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     position: relative;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 30px rgba(99, 102, 241, 0.4);
+    }
 }
 
 .game-title::after {
@@ -412,6 +433,16 @@ body::before {
     gap: var(--spacing-sm);
     position: relative;
     overflow: hidden;
+    animation: buttonFloat 6s ease-in-out infinite;
+}
+
+.choice-btn:nth-child(1) { animation-delay: 0s; }
+.choice-btn:nth-child(2) { animation-delay: 2s; }
+.choice-btn:nth-child(3) { animation-delay: 4s; }
+
+@keyframes buttonFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
 }
 
 .choice-btn::before {
@@ -508,7 +539,19 @@ body::before {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: pulse 2s ease-in-out infinite;
+    animation: vsGlow 3s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+}
+
+@keyframes vsGlow {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(236, 72, 153, 0.8), 0 0 40px rgba(236, 72, 153, 0.6);
+        transform: scale(1.05);
+    }
 }
 
 .battle-animation {
@@ -525,6 +568,48 @@ body::before {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: var(--spacing-sm);
+    animation: resultPop 0.5s ease-out;
+}
+
+.result-text.win {
+    color: #10b981;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    animation: winCelebration 0.8s ease-out;
+}
+
+.result-text.loss {
+    color: #ef4444;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    animation: lossShake 0.6s ease-out;
+}
+
+.result-text.tie {
+    color: #6366f1;
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    animation: tiePulse 0.7s ease-out;
+}
+
+@keyframes resultPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes winCelebration {
+    0% { transform: scale(0.8) rotate(-5deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes lossShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes tiePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 .result-subtext {
