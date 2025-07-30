@@ -87,9 +87,17 @@
                         <span class="btn-text">Play Again</span>
                         <span class="btn-icon">🔄</span>
                     </button>
-                    <button class="control-btn secondary" id="resetBtn">
-                        <span class="btn-text">Reset Stats</span>
+                    <button class="control-btn secondary" id="resetGameBtn">
+                        <span class="btn-text">Reset Game</span>
                         <span class="btn-icon">🔄</span>
+                    </button>
+                    <button class="control-btn danger" id="resetStatsBtn">
+                        <span class="btn-text">Reset Stats</span>
+                        <span class="btn-icon">🗑️</span>
+                    </button>
+                    <button class="control-btn info" id="inviteBtn" style="display: none;">
+                        <span class="btn-text">Invite Friend</span>
+                        <span class="btn-icon">🔗</span>
                     </button>
                 </div>
             </section>
@@ -124,7 +132,13 @@
                 <div class="player-info">
                     <div class="player-avatar">
                         <div class="player-avatar-icon">👤</div>
-                        <div class="player-name">Player 2</div>
+                        <div class="player-name" id="player2Name">Player 2</div>
+                    </div>
+                    <div class="connection-status" id="connectionStatus" style="display: none;">
+                        <div class="status-indicator">
+                            <div class="status-dot" id="statusDot"></div>
+                            <span class="status-text" id="statusText">Disconnected</span>
+                        </div>
                     </div>
                 </div>
                 <div class="choice-display" id="player2Choice">
@@ -170,7 +184,8 @@
                         <button class="mode-btn active" data-mode="classic">Classic</button>
                         <button class="mode-btn" data-mode="advanced">Advanced</button>
                         <button class="mode-btn" data-mode="tournament">Tournament</button>
-                        <button class="mode-btn" data-mode="multiplayer">Multiplayer</button>
+                        <button class="mode-btn" data-mode="multiplayer">Local Multi</button>
+                        <button class="mode-btn" data-mode="online-multiplayer">Online Multi</button>
                         <button class="mode-btn" data-mode="lizard-spock">Lizard Spock</button>
                     </div>
                 </div>

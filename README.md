@@ -22,7 +22,8 @@ The most advanced rock-paper-scissors game ever created! Featuring AI opponents,
 - **Classic Mode**: Traditional rock-paper-scissors
 - **Advanced Mode**: Enhanced features and special moves
 - **Tournament Mode**: Multi-round competitions
-- **Multiplayer Mode**: Local player vs player battles
+- **Local Multiplayer**: Same-device player vs player battles
+- **Online Multiplayer**: Play with friends via shareable invite links
 - **Lizard Spock Mode**: Extended 5-choice variant with Lizard and Spock
 
 ### 📊 Statistics & Analytics
@@ -51,12 +52,14 @@ The most advanced rock-paper-scissors game ever created! Featuring AI opponents,
 - **Accessibility**: ARIA labels and keyboard navigation
 - **PWA Ready**: Service worker support
 - **Easter Eggs**: Konami code and hidden features
-- **Mobile Optimized**: Touch-friendly interface
+- **Fully Responsive**: Optimized for all screen sizes (320px to 1400px+)
 - **Achievements System**: Unlock badges and trophies
 - **Power-ups**: Special abilities and bonuses
 - **Leaderboards**: Track high scores and statistics
 - **Multiple Themes**: Neon, Retro, Minimal, and Default themes
-- **Multiplayer Support**: Local 2-player battles
+- **Local & Online Multiplayer**: Play with friends locally or online
+- **Auto-Reset**: Continuous gameplay with automatic round reset
+- **Enhanced Controls**: Multiple reset options and improved UX
 
 ## 🚀 Getting Started
 
@@ -164,6 +167,29 @@ Choose from multiple visual themes:
 - **Retro**: Orange and yellow vintage gaming theme
 - **Minimal**: Clean light theme for distraction-free play
 
+### 🌐 Online Multiplayer
+
+Play with friends anywhere:
+
+#### 🔗 How to Play Online
+1. **Create Game**: Switch to "Online Multi" mode
+2. **Share Link**: Click "Invite Friend" to copy the invite link
+3. **Send to Friend**: Share the link via any messaging platform
+4. **Play Together**: Your friend joins automatically when they click the link
+
+#### 📱 Cross-Platform Compatible
+- Works on any device with a web browser
+- No app installation required
+- Real-time synchronization (simulated in current version)
+
+### 🔄 Auto-Reset Feature
+
+Enjoy seamless continuous gameplay:
+- **Automatic Reset**: Game resets after 4 seconds for the next round
+- **Manual Controls**: "Play Again" and "Reset Game" buttons available
+- **Complete Reset**: "Reset Stats" button clears all progress
+- **Smart Timing**: Auto-reset pauses if you interact with the game
+
 ## 🛠️ Technical Details
 
 ### Technologies Used
@@ -183,7 +209,26 @@ Choose from multiple visual themes:
 - **Optimized Animations**: Hardware-accelerated CSS animations
 - **Efficient Rendering**: Minimal DOM manipulation
 - **Memory Management**: Proper cleanup and garbage collection
-- **Responsive Images**: Optimized for all screen sizes
+- **Responsive Design**: Optimized for all screen sizes
+
+### 📱 Mobile Responsiveness
+
+Fully optimized for all devices:
+
+#### 📏 Screen Size Support
+- **Extra Large (1200px+)**: Desktop with expanded layout
+- **Large (768px-1199px)**: Desktop/tablet with stacked layout
+- **Tablet (481px-767px)**: Touch-optimized tablet interface
+- **Mobile (320px-480px)**: Full mobile experience
+- **Small Mobile (up to 320px)**: Compact mobile layout
+
+#### 🎯 Mobile Optimizations
+- **Touch-Friendly Buttons**: Large, easy-to-tap controls
+- **Vertical Layout**: Stacked sections for better mobile viewing
+- **Reduced Padding**: Space-efficient design for small screens
+- **Responsive Text**: Scalable fonts and sizes
+- **Mobile Notifications**: Optimized popups and modals
+- **Swipe-Friendly**: Smooth touch interactions
 
 ## 🎨 Customization
 

@@ -14,7 +14,10 @@ class UltimateRPS {
             animationsEnabled: true,
             soundEnabled: true,
             isMultiplayer: false,
+            isOnlineMultiplayer: false,
             currentPlayer: 1,
+            gameId: null,
+            isHost: false,
             stats: {
                 wins: 0,
                 losses: 0,
@@ -116,7 +119,9 @@ class UltimateRPS {
 
         // Game controls
         document.getElementById('playAgainBtn').addEventListener('click', () => this.resetGame());
-        document.getElementById('resetBtn').addEventListener('click', () => this.resetStats());
+        document.getElementById('resetGameBtn').addEventListener('click', () => this.resetGame());
+        document.getElementById('resetStatsBtn').addEventListener('click', () => this.resetStats());
+        document.getElementById('inviteBtn').addEventListener('click', () => this.generateInviteLink());
 
         // Panel toggle
         document.getElementById('panelToggle').addEventListener('click', () => this.togglePanel());
@@ -189,13 +194,18 @@ class UltimateRPS {
     }
 
     handlePlayerChoice(choice, player = 1) {
-        if (this.gameState.isMultiplayer) {
+        if (this.gameState.isMultiplayer || this.gameState.isOnlineMultiplayer) {
             if (player === 1 && this.gameState.playerChoice) return;
             if (player === 2 && this.gameState.player2Choice) return;
             
             if (player === 1) {
                 this.gameState.playerChoice = choice;
                 this.updatePlayerDisplay();
+                
+                // In online multiplayer, send choice to other player
+                if (this.gameState.isOnlineMultiplayer) {
+                    this.sendChoiceToOpponent(choice);
+                }
             } else {
                 this.gameState.player2Choice = choice;
                 this.updatePlayer2Display();
@@ -462,30 +472,52 @@ class UltimateRPS {
     }
 
     showResult() {
-        const { result, playerChoice, aiChoice } = this.gameState;
+        const { result, playerChoice, aiChoice, player2Choice, isMultiplayer } = this.gameState;
         const resultDisplay = document.getElementById('resultDisplay');
         const playAgainBtn = document.getElementById('playAgainBtn');
         
         let resultText, resultSubtext, resultClass;
         
-        switch(result) {
-            case 'win':
-                resultText = 'Victory! 🎉';
-                resultSubtext = `Your ${playerChoice} beats AI's ${aiChoice}`;
-                resultClass = 'win';
-                this.playSound('win');
-                break;
-            case 'loss':
-                resultText = 'Defeat! 😔';
-                resultSubtext = `AI's ${aiChoice} beats your ${playerChoice}`;
-                resultClass = 'loss';
-                this.playSound('lose');
-                break;
-            case 'tie':
-                resultText = 'It\'s a Tie! 🤝';
-                resultSubtext = `Both chose ${playerChoice}`;
-                resultClass = 'tie';
-                break;
+        if (isMultiplayer) {
+            switch(result) {
+                case 'win':
+                    resultText = 'Player 1 Wins! 🎉';
+                    resultSubtext = `${playerChoice} beats ${player2Choice}`;
+                    resultClass = 'win';
+                    this.playSound('win');
+                    break;
+                case 'player2win':
+                    resultText = 'Player 2 Wins! 🎉';
+                    resultSubtext = `${player2Choice} beats ${playerChoice}`;
+                    resultClass = 'player2win';
+                    this.playSound('win');
+                    break;
+                case 'tie':
+                    resultText = 'It\'s a Tie! 🤝';
+                    resultSubtext = `Both chose ${playerChoice}`;
+                    resultClass = 'tie';
+                    break;
+            }
+        } else {
+            switch(result) {
+                case 'win':
+                    resultText = 'Victory! 🎉';
+                    resultSubtext = `Your ${playerChoice} beats AI's ${aiChoice}`;
+                    resultClass = 'win';
+                    this.playSound('win');
+                    break;
+                case 'loss':
+                    resultText = 'Defeat! 😔';
+                    resultSubtext = `AI's ${aiChoice} beats your ${playerChoice}`;
+                    resultClass = 'loss';
+                    this.playSound('lose');
+                    break;
+                case 'tie':
+                    resultText = 'It\'s a Tie! 🤝';
+                    resultSubtext = `Both chose ${playerChoice}`;
+                    resultClass = 'tie';
+                    break;
+            }
         }
         
         resultDisplay.innerHTML = `
@@ -498,6 +530,21 @@ class UltimateRPS {
         // Add result animation
         if (this.gameState.animationsEnabled) {
             resultDisplay.classList.add('fade-in');
+        }
+        
+        // Auto-reset after 4 seconds for continuous play
+        this.autoResetTimer = setTimeout(() => {
+            this.autoResetGame();
+        }, 4000);
+    }
+
+    autoResetGame() {
+        // Only auto-reset if user hasn't manually clicked play again
+        if (this.gameState.result) {
+            this.resetGame();
+            
+            // Show auto-reset notification
+            this.showNotification('Ready for next round! 🎮');
         }
     }
 
@@ -584,6 +631,12 @@ class UltimateRPS {
     }
 
     resetGame() {
+        // Clear auto-reset timer
+        if (this.autoResetTimer) {
+            clearTimeout(this.autoResetTimer);
+            this.autoResetTimer = null;
+        }
+        
         this.gameState.playerChoice = null;
         this.gameState.player2Choice = null;
         this.gameState.aiChoice = null;
@@ -594,7 +647,7 @@ class UltimateRPS {
         document.getElementById('playerChoice').innerHTML = '<div class="choice-placeholder">Choose your weapon!</div>';
         document.getElementById('playerChoice').classList.remove('has-choice');
         
-        if (this.gameState.isMultiplayer) {
+        if (this.gameState.isMultiplayer || this.gameState.isOnlineMultiplayer) {
             document.getElementById('player2Choice').innerHTML = '<div class="choice-placeholder">Waiting for choice...</div>';
             document.getElementById('player2Choice').classList.remove('has-choice');
         } else {
@@ -603,13 +656,20 @@ class UltimateRPS {
         }
         
         // Reset result display
-        const resultText = this.gameState.isMultiplayer ? 'Ready for battle?' : 'Ready to battle?';
-        const subText = this.gameState.isMultiplayer ? 'Both players choose your weapons!' : 'Choose your weapon to begin!';
+        let resultText, subText;
+        if (this.gameState.isMultiplayer || this.gameState.isOnlineMultiplayer) {
+            resultText = 'Ready for battle?';
+            subText = 'Both players choose your weapons!';
+        } else {
+            resultText = 'Ready to battle?';
+            subText = 'Choose your weapon to begin!';
+        }
         
         document.getElementById('resultDisplay').innerHTML = `
             <div class="result-text">${resultText}</div>
             <div class="result-subtext">${subText}</div>
         `;
+        document.getElementById('resultDisplay').classList.remove('fade-in');
         
         // Hide play again button
         document.getElementById('playAgainBtn').style.display = 'none';
@@ -659,39 +719,64 @@ class UltimateRPS {
         switch(mode) {
             case 'multiplayer':
                 this.gameState.isMultiplayer = true;
+                this.gameState.isOnlineMultiplayer = false;
                 aiSection.style.display = 'none';
                 player2Section.style.display = 'block';
                 extendedChoices.forEach(btn => btn.style.display = 'none');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.getElementById('inviteBtn').style.display = 'none';
+                break;
+            case 'online-multiplayer':
+                this.gameState.isMultiplayer = false;
+                this.gameState.isOnlineMultiplayer = true;
+                aiSection.style.display = 'none';
+                player2Section.style.display = 'block';
+                extendedChoices.forEach(btn => btn.style.display = 'none');
+                document.getElementById('connectionStatus').style.display = 'block';
+                document.getElementById('inviteBtn').style.display = 'inline-flex';
+                this.initializeOnlineMultiplayer();
                 break;
             case 'lizard-spock':
                 this.gameState.isMultiplayer = false;
+                this.gameState.isOnlineMultiplayer = false;
                 aiSection.style.display = 'block';
                 player2Section.style.display = 'none';
                 extendedChoices.forEach(btn => btn.style.display = 'flex');
                 // Also show extended choices for player 2 if in multiplayer
                 const player2Extended = document.querySelectorAll('#player2Buttons .extended-choice');
                 player2Extended.forEach(btn => btn.style.display = 'flex');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.getElementById('inviteBtn').style.display = 'none';
                 break;
             case 'advanced':
                 this.gameState.isMultiplayer = false;
+                this.gameState.isOnlineMultiplayer = false;
                 aiSection.style.display = 'block';
                 player2Section.style.display = 'none';
                 extendedChoices.forEach(btn => btn.style.display = 'none');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.getElementById('inviteBtn').style.display = 'none';
                 this.enableAdvancedFeatures();
                 break;
             case 'tournament':
                 this.gameState.isMultiplayer = false;
+                this.gameState.isOnlineMultiplayer = false;
                 aiSection.style.display = 'block';
                 player2Section.style.display = 'none';
                 extendedChoices.forEach(btn => btn.style.display = 'none');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.getElementById('inviteBtn').style.display = 'none';
                 this.enableTournamentMode();
                 break;
             default:
                 // Classic mode
                 this.gameState.isMultiplayer = false;
+                this.gameState.isOnlineMultiplayer = false;
                 aiSection.style.display = 'block';
                 player2Section.style.display = 'none';
                 extendedChoices.forEach(btn => btn.style.display = 'none');
+                document.getElementById('connectionStatus').style.display = 'none';
+                document.getElementById('inviteBtn').style.display = 'none';
                 this.disableAdvancedFeatures();
                 break;
         }
@@ -1074,6 +1159,156 @@ class UltimateRPS {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 3000);
+    }
+
+    // Online Multiplayer Methods
+    initializeOnlineMultiplayer() {
+        // Check if this is a join link
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameId = urlParams.get('game');
+        
+        if (gameId) {
+            this.joinGame(gameId);
+        } else {
+            this.createGame();
+        }
+        
+        this.updateConnectionStatus('connecting', 'Connecting...');
+    }
+
+    createGame() {
+        // Generate a unique game ID
+        this.gameState.gameId = this.generateGameId();
+        this.gameState.isHost = true;
+        
+        // Simulate connection (in real implementation, this would connect to a server)
+        setTimeout(() => {
+            this.updateConnectionStatus('waiting', 'Waiting for player...');
+            this.showNotification('Game created! Share invite link to play.');
+        }, 1000);
+    }
+
+    joinGame(gameId) {
+        this.gameState.gameId = gameId;
+        this.gameState.isHost = false;
+        
+        // Simulate joining (in real implementation, this would connect to the game)
+        setTimeout(() => {
+            this.updateConnectionStatus('connected', 'Connected');
+            document.getElementById('player2Name').textContent = 'Friend';
+            this.showNotification('Connected to game!');
+        }, 1500);
+    }
+
+    generateGameId() {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    generateInviteLink() {
+        if (!this.gameState.gameId) {
+            this.showNotification('No active game to share!');
+            return;
+        }
+
+        const inviteUrl = `${window.location.origin}${window.location.pathname}?game=${this.gameState.gameId}`;
+        
+        // Copy to clipboard
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(inviteUrl).then(() => {
+                this.showNotification('Invite link copied to clipboard! 📋');
+            }).catch(() => {
+                this.showInviteModal(inviteUrl);
+            });
+        } else {
+            this.showInviteModal(inviteUrl);
+        }
+    }
+
+    showInviteModal(inviteUrl) {
+        const modal = document.createElement('div');
+        modal.className = 'invite-modal';
+        modal.innerHTML = `
+            <div class="invite-modal-content">
+                <h3>Invite Your Friend</h3>
+                <p>Share this link to play together:</p>
+                <div class="invite-link-container">
+                    <input type="text" value="${inviteUrl}" readonly class="invite-link">
+                    <button class="copy-btn" onclick="this.previousElementSibling.select(); document.execCommand('copy'); this.textContent='Copied!'">Copy</button>
+                </div>
+                <button class="close-invite-btn" onclick="this.parentElement.parentElement.remove()">Close</button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        setTimeout(() => modal.classList.add('show'), 100);
+    }
+
+    updateConnectionStatus(status, text) {
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        
+        statusDot.className = `status-dot ${status}`;
+        statusText.textContent = text;
+    }
+
+    sendChoiceToOpponent(choice) {
+        // Simulate sending choice to opponent (in real implementation, this would use WebRTC or WebSocket)
+        setTimeout(() => {
+            // Simulate opponent's choice
+            const opponentChoice = this.getRandomChoice();
+            this.receiveOpponentChoice(opponentChoice);
+        }, Math.random() * 2000 + 1000); // Random delay 1-3 seconds
+    }
+
+    receiveOpponentChoice(choice) {
+        this.gameState.player2Choice = choice;
+        this.updatePlayer2Display();
+        this.playSound('choice');
+        
+        // Check if both players have made their choices
+        if (this.gameState.playerChoice && this.gameState.player2Choice) {
+            setTimeout(() => {
+                this.determineWinner();
+                this.updateGameHistory();
+                this.updateStats();
+                this.updateDisplay();
+                this.showResult();
+                this.checkAchievements();
+            }, 500);
+        }
+    }
+
+    // Enhanced reset functionality
+    resetStats() {
+        if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+            this.gameState.stats = {
+                wins: 0,
+                losses: 0,
+                ties: 0,
+                totalGames: 0,
+                player2Wins: 0,
+                streaks: {
+                    current: 0,
+                    best: 0
+                }
+            };
+            this.gameState.gameHistory = [];
+            this.gameState.achievements = [];
+            this.gameState.leaderboard = [];
+            this.gameState.powerups = {
+                shield: 0,
+                doubleStrike: 0,
+                mindRead: 0
+            };
+            
+            this.updateDisplay();
+            this.updateAchievementsDisplay();
+            this.updateLeaderboardDisplay();
+            this.updatePowerupDisplay();
+            this.saveGame();
+            
+            this.showNotification('All statistics reset! 🔄');
+        }
     }
 }
 
